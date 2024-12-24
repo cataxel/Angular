@@ -18,13 +18,16 @@ export class HousingService {
       { id: 8, name: 'Seriously Safe Towns', city: 'Oakland', state: 'CA', photo: `${this.baseUrl}/saru-robert-9rP3mxf8qWI-unsplash.jpg`, availableUnits: 10, wifi: false, laundry: false, },
       { id: 9, name: 'Capital Safe Towns', city: 'Portland', state: 'OR', photo: `${this.baseUrl}/webaliser-_TPTXZd9mOo-unsplash.jpg`, availableUnits: 6, wifi: true, laundry: true, },
     ];
-  
-  getAllHousingLocations(): HousingLocation[] {
-    return this.housingLocationList;
+
+  url = 'http://localhost:3000/locations';
+  async getAllHousingLocations(): Promise<HousingLocation[]> {
+    const data = await fetch(this.url);
+    return (await data.json())?? [];
   }
 
-  getHousingLocationsById(id: number): HousingLocation | undefined {
-    return this.housingLocationList.find((housingLocation) => housingLocation.id === id);
+  async getHousingLocationsById(id: number): Promise<HousingLocation | undefined> {
+    const data = await fetch(`${this.url}/${id}`);
+    return (await data.json())?? {};
   }
 
   submitApplication(firstName: string, lastName: string, email: string){
